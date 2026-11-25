@@ -1,0 +1,80 @@
+import java.util.ArrayDeque;
+	import java.util.Deque;
+	import java.util.Scanner;
+
+public class Question4 {
+	
+	static class ExpressionEvaluator {
+	    private static boolean isOperator(String t) {
+	        return t.equals("+") || t.equals("-") || t.equals("*")
+	            || t.equals("/") || t.equals("%") || t.equals("^");
+	    }
+
+	    private static int apply(int a, int b, String op) {
+	        switch (op) {
+	            case "+": return a + b;
+	            case "-": return a - b;
+	            case "*": return a * b;
+	            case "/":
+	                if (b == 0) throw new ArithmeticException("Division by zero");
+	                return a / b;
+	            case "%":
+	                if (b == 0) throw new ArithmeticException("Modulus by zero");
+	                return a % b;
+	            case "^": return (int) Math.pow(a, b);
+	            default:  throw new IllegalArgumentException("Bad operator: " + op);
+	        }
+	    }
+
+	    public static int evaluatePostfix(String expr) {
+	        Deque<Integer> stack = new ArrayDeque<>();
+	        String[] tokens = expr.trim().split("\\s+");
+
+	        for (String token : tokens) {
+	            if (isOperator(token)) {
+	                int b = stack.pop();    
+	                int a = stack.pop();      
+	                stack.push(apply(a, b, token));
+	            } else {
+	                stack.push(Integer.parseInt(token));
+	            }
+	        }
+	        return stack.pop();
+	    }
+
+	    public static int evaluatePrefix(String expr) {
+	        Deque<Integer> stack = new ArrayDeque<>();
+	        String[] tokens = expr.trim().split("\\s+");
+
+	        for (int i = tokens.length - 1; i >= 0; i--) {
+	            String token = tokens[i];
+	            if (isOperator(token)) {
+	                int a = stack.pop();     
+	                int b = stack.pop();      
+	                stack.push(apply(a, b, token));
+	            } else {
+	                stack.push(Integer.parseInt(token));
+	            }
+	        }
+	        return stack.pop();
+	    }
+
+	    public static void main(String[] args) {
+	        Scanner sc = new Scanner(System.in);
+
+	        System.out.println("NOTE: separate operands & operators with SPACES.");
+	        System.out.println("e.g. postfix -> 120 45 + 3 *");
+	        System.out.println("e.g. prefix  -> * + 120 45 3\n");
+
+	        System.out.print("Enter POSTFIX expression: ");
+	        String postfix = sc.nextLine();
+	        System.out.println("Postfix result = " + evaluatePostfix(postfix));
+
+	        System.out.print("\nEnter PREFIX expression: ");
+	        String prefix = sc.nextLine();
+	        System.out.println("Prefix result = " + evaluatePrefix(prefix));
+
+	        sc.close();
+	    }
+	}
+}

@@ -1,0 +1,59 @@
+	import java.util.Scanner;
+
+public class Question1 {
+	static class LinearQueue {
+
+	    private int[] queue;
+	    private int front, rear, size;
+
+	    public LinearQueue(int size) {
+	        this.size = size;
+	        queue = new int[size];
+	        front = 0;  
+	        rear  = 0;   
+	    }
+
+	    public boolean isEmpty() { return front == rear; }
+	    public boolean isFull()  { return rear == size; }
+
+	    public void enqueue(int item) {
+	        if (isFull()) { System.out.println("Queue Overflow! Cannot insert " + item); return; }
+	        queue[rear++] = item;
+	        System.out.println(item + " enqueued");
+	    }
+
+	    public void dequeue() {
+	        if (isEmpty()) { System.out.println("Queue Underflow! Queue is empty"); return; }
+	        System.out.println(queue[front++] + " dequeued");
+	    }
+
+	    public void display() {
+	        if (isEmpty()) { System.out.println("Queue is empty"); return; }
+	        System.out.print("Queue (front -> rear): ");
+	        for (int i = front; i < rear; i++) System.out.print(queue[i] + " ");
+	        System.out.println();
+	    }
+		    public static void main(String[] args) {
+		        Scanner sc = new Scanner(System.in);
+		        System.out.print("Enter queue size: ");
+		        LinearQueue q = new LinearQueue(sc.nextInt());
+
+		        int choice;
+		        do {
+		            System.out.println("\n--- LINEAR QUEUE ---");
+		            System.out.println("1.Enqueue  2.Dequeue  3.Display  4.Exit");
+		            System.out.print("Choice: ");
+		            choice = sc.nextInt();
+		            switch (choice) {
+		                case 1: System.out.print("Enter value: ");
+		                        q.enqueue(sc.nextInt()); break;
+		                case 2: q.dequeue(); break;
+		                case 3: q.display(); break;
+		                case 4: System.out.println("Bye!"); break;
+		                default: System.out.println("Invalid choice");
+		            }
+		        } while (choice != 4);
+		        sc.close();
+		    }
+		}
+	}
